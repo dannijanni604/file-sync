@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "751235484950",
+    "project_id": "file-sync-df400",
+    "storage_bucket": "file-sync-df400.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751235484950:android:3ab5973de962c133af5437",
+        "android_client_info": {
+          "package_name": "com.example.file_sync"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "751235484950-iqdfj8te7og1iflgp6aogkpi9gvrog1e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwZ2iCySjL7y2fAwem5-HicaRjoi-xIfA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "751235484950-iqdfj8te7og1iflgp6aogkpi9gvrog1e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
