@@ -11,32 +11,32 @@ import 'package:http/io_client.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:googleapis_auth/auth_io.dart';
 
-Future<http.Client> getHttpClient() async {
-  //Get Credentials
-  var credentials = await storage.getCredentials();
-  if (credentials == null) {
-    //Needs user authentication
-    var authClient =
-        await clientViaUserConsent(ClientId(_clientId), _scopes, (url) {
-      //Open Url in Browser
-      launch(url);
-    });
-    //Save Credentials
-    await storage.saveCredentials(authClient.credentials.accessToken,
-        authClient.credentials.refreshToken!);
-    return authClient;
-  } else {
-    print(credentials["expiry"]);
-    //Already authenticated
-    return authenticatedClient(
-        http.Client(),
-        AccessCredentials(
-            AccessToken(credentials["type"], credentials["data"],
-                DateTime.tryParse(credentials["expiry"])!),
-            credentials["refreshToken"],
-            _scopes));
-  }
-}
+// Future<http.Client> getHttpClient() async {
+//   //Get Credentials
+//   var credentials = await storage.getCredentials();
+//   if (credentials == null) {
+//     //Needs user authentication
+//     var authClient =
+//         await clientViaUserConsent(ClientId(_clientId), _scopes, (url) {
+//       //Open Url in Browser
+//       launch(url);
+//     });
+//     //Save Credentials
+//     await storage.saveCredentials(authClient.credentials.accessToken,
+//         authClient.credentials.refreshToken!);
+//     return authClient;
+//   } else {
+//     print(credentials["expiry"]);
+//     //Already authenticated
+//     return authenticatedClient(
+//         http.Client(),
+//         AccessCredentials(
+//             AccessToken(credentials["type"], credentials["data"],
+//                 DateTime.tryParse(credentials["expiry"])!),
+//             credentials["refreshToken"],
+//             _scopes));
+//   }
+// }
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({
