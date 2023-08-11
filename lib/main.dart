@@ -1,5 +1,6 @@
 import 'package:file_sync/controller/navigator.dart';
 import 'package:file_sync/home.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
@@ -18,8 +19,7 @@ void callbackDispatcher() {
       default:
     }
 
-    print(
-        "||||||||||||||||||||||||||||||||||||||||\Native called background task: ---"); //simpleTask will be emitted here.
+    print("Native called background task: ---");
     return Future.value(true);
   });
 }
@@ -27,6 +27,8 @@ void callbackDispatcher() {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

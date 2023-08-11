@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:googleapis/drive/v3.dart' as ga;
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
+import 'package:http/io_client.dart';
 import 'package:path_provider/path_provider.dart';
 
 class GoogleClient extends http.BaseClient {
@@ -41,15 +42,15 @@ class _MyHomePageState extends State<MyHomePage> {
   late ga.FileList list;
   var signedIn = false;
 
-  Future<void> _loginWithGoogle() async {
+  Future<void> loginWithGoogle() async {
     GoogleSignInAccount? account = await googleSignIn.signIn();
     if (account != null) {
       googleSignInAccount = account;
-      _afterGoogleLogin(account);
+      afterGoogleLogin(account);
     }
   }
 
-  Future<void> _afterGoogleLogin(GoogleSignInAccount gSA) async {
+  Future<void> afterGoogleLogin(GoogleSignInAccount gSA) async {
     googleSignInAccount = gSA;
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
@@ -75,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _logoutFromGoogle() async {
+  void logoutFromGoogle() async {
     googleSignIn.signOut().then((value) {
       print("User Sign Out");
       storage.write(key: "signedIn", value: "false").then((value) {
@@ -86,29 +87,29 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Future<void> _uploadLocalFiles() async {
+  Future<void> uploadLocalFiles() async {
     final localFolder = await getExternalStorageDirectory();
     final client = GoogleClient(await googleSignInAccount.authHeaders);
     final drive = ga.DriveApi(client);
 
     if (localFolder != null) {
-      final localFiles = await _listLocalFiles(localFolder.path);
+      final localFiles = await listLocalFiles(localFolder.path);
       for (final localFile in localFiles) {
-        await _uploadFile(drive, localFile);
+        await uploadFile(drive, localFile);
       }
 
       print('Local files uploaded to Google Drive.');
     }
   }
 
-  Future<List<File>> _listLocalFiles(String folderPath) async {
+  Future<List<File>> listLocalFiles(String folderPath) async {
     final localDirectory = Directory(folderPath);
     final localFiles =
         await localDirectory.list().where((entity) => entity is File).toList();
     return localFiles.cast<File>();
   }
 
-  Future<void> _uploadFile(ga.DriveApi drive, File localFile) async {
+  Future<void> uploadFile(ga.DriveApi drive, File localFile) async {
     final fileToUpload = ga.File();
     final fileName = path.basename(localFile.path);
 
@@ -126,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Future<void> _listGoogleDriveFiles() async {
+  Future<void> listGoogleDriveFiles() async {
     var client = GoogleClient(await googleSignInAccount.authHeaders);
     var drive = ga.DriveApi(client);
     drive.files.list(spaces: 'appDataFolder').then((value) {
@@ -142,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Future<void> _downloadFile(ga.File file) async {
+  Future<void> downloadFile(ga.File file) async {
     final client = GoogleClient(await googleSignInAccount.authHeaders);
     final drive = ga.DriveApi(client);
 
@@ -192,7 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onPressed: () {
                 if (list.files != null) {
-                  _downloadFile(list.files![i]);
+                  downloadFile(list.files![i]);
                 }
               },
             ),
@@ -203,15 +204,153 @@ class _MyHomePageState extends State<MyHomePage> {
     return listItem;
   }
 
+// UI
+// UI
+// UI
+// UI
+// UI
+// UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
+        appBar: AppBar(
+          title: Text("Google Drive"),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(10),
+                height: MediaQuery.of(context).size.height * 0.27,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.grey.shade300,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                            padding: EdgeInsets.all(5),
+                            height: 35,
+                            width: 35,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.grey.shade100,
+                            ),
+                            child: Image.asset("assets/google_drive.png")),
+                        SizedBox(width: 20),
+                        Text(
+                          'Google Drive',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: const [
+                            Icon(Icons.error),
+                            SizedBox(width: 5),
+                            Text("Not used in sync"),
+                          ],
+                        ),
+                        ElevatedButton(
+                            onPressed: () {},
+                            child: Row(
+                              children: const [
+                                Icon(Icons.add),
+                                SizedBox(width: 5),
+                                Text("Folder Pair"),
+                              ],
+                            )),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Column(
+                          children: [
+                            Material(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(100)),
+                              color: Colors.blueGrey,
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                    Icons
+                                        .signal_wifi_statusbar_connected_no_internet_4,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            Text("Test")
+                          ],
+                        ),
+                        SizedBox(width: 15),
+                        Column(
+                          children: [
+                            Material(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(100)),
+                              color: Colors.redAccent.shade700,
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.delete, color: Colors.white),
+                              ),
+                            ),
+                            Text("Delete")
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.025,
+              ),
+              Container(
+                padding: EdgeInsets.all(25),
+                height: MediaQuery.of(context).size.height * 0.564,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.grey.shade300,
+                ),
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue)),
+                        height: 35,
+                        width: 35,
+                        child: Image.asset("assets/google.png"),
+                      ),
+                      Container(
+                        color: Colors.blue.shade600,
+                        height: 35,
+                        width: 150,
+                        child: Center(
+                          child: Text(
+                            "Sign in with Google",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ));
   }
 }
