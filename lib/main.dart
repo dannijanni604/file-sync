@@ -1,3 +1,4 @@
+import 'package:file_sync/controller/google_drive_controller/google_drive_controller.dart';
 import 'package:file_sync/controller/navigator.dart';
 import 'package:file_sync/home.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,7 +30,10 @@ void main() async {
   await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
 
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (_) => DriveController(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

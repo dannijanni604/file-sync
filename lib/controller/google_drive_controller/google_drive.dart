@@ -6,8 +6,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:googleapis/drive/v3.dart' as ga;
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
-import 'package:http/io_client.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../../components/app_snackbar.dart';
 
 class GoogleClient extends http.BaseClient {
   final http.Client _httpClient = http.Client();
@@ -26,66 +27,70 @@ class MyHomePage extends StatefulWidget {
   }) : super(key: key);
   final String title = "Title";
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
   final storage = FlutterSecureStorage();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  // final GoogleSignIn googleSignIn = GoogleSignIn(
-  //   scopes: ['https://www.googleapis.com/auth/drive.appdata'],
-  // );
   final GoogleSignIn googleSignIn = GoogleSignIn(
-    scopes: [ga.DriveApi.driveAppdataScope],
+    scopes: [
+      ga.DriveApi.driveAppdataScope,
+      'email',
+      'profile',
+    ],
   );
   late GoogleSignInAccount googleSignInAccount;
   late ga.FileList list;
   var signedIn = false;
 
-  Future<void> loginWithGoogle() async {
-    GoogleSignInAccount? account = await googleSignIn.signIn();
-    if (account != null) {
-      googleSignInAccount = account;
-      afterGoogleLogin(account);
-    }
-  }
+  // Future<void> loginWithGoogle() async {
+  //   GoogleSignInAccount? account = await googleSignIn.signIn();
+  //   if (account != null) {
+  //     googleSignInAccount = account;
+  //     afterGoogleLogin(account);
+  //   }
+  //   appSnackBar(context, "Logged In Successfully");
+  // }
 
-  Future<void> afterGoogleLogin(GoogleSignInAccount gSA) async {
-    googleSignInAccount = gSA;
-    final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
+  // Future<void> afterGoogleLogin(GoogleSignInAccount gSA) async {
+  //   googleSignInAccount = gSA;
+  //   final GoogleSignInAuthentication googleSignInAuthentication =
+  //       await googleSignInAccount.authentication;
 
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
+  //   final AuthCredential credential = GoogleAuthProvider.credential(
+  //     accessToken: googleSignInAuthentication.accessToken,
+  //     idToken: googleSignInAuthentication.idToken,
+  //   );
 
-    final UserCredential authResult =
-        await _auth.signInWithCredential(credential);
-    final User? user = authResult.user;
-    if (user == null) {
-      return;
-    }
+  //   final UserCredential authResult =
+  //       await _auth.signInWithCredential(credential);
+  //   final User? user = authResult.user;
+  //   if (user == null) {
+  //     return;
+  //   }
+  //   String displayName = googleSignInAccount.displayName ?? '';
 
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-    storage.write(key: "signedIn", value: "true").then((value) {
-      setState(() {
-        signedIn = true;
-      });
-    });
-  }
+  //   assert(!user.isAnonymous);
+  //   assert(await user.getIdToken() != null);
+  //   storage.write(key: "signedIn", value: "true").then((value) {
+  //     setState(() {
+  //       signedIn = true;
+  //     });
+  //   });
+  //   print('User Display Name: $displayName');
+  // }
 
-  void logoutFromGoogle() async {
-    googleSignIn.signOut().then((value) {
-      print("User Sign Out");
-      storage.write(key: "signedIn", value: "false").then((value) {
-        setState(() {
-          signedIn = false;
-        });
-      });
-    });
-  }
+  // void logoutFromGoogle() async {
+  //   googleSignIn.signOut().then((value) {
+  //     print("User Sign Out");
+  //     storage.write(key: "signedIn", value: "false").then((value) {
+  //       setState(() {
+  //         signedIn = false;
+  //       });
+  //     });
+  //   });
+  // }
 
   Future<void> uploadLocalFiles() async {
     final localFolder = await getExternalStorageDirectory();
@@ -212,145 +217,6 @@ class _MyHomePageState extends State<MyHomePage> {
 // UI
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Google Drive"),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(10),
-                height: MediaQuery.of(context).size.height * 0.27,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey.shade300,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                            padding: EdgeInsets.all(5),
-                            height: 35,
-                            width: 35,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey.shade100,
-                            ),
-                            child: Image.asset("assets/google_drive.png")),
-                        SizedBox(width: 20),
-                        Text(
-                          'Google Drive',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: const [
-                            Icon(Icons.error),
-                            SizedBox(width: 5),
-                            Text("Not used in sync"),
-                          ],
-                        ),
-                        ElevatedButton(
-                            onPressed: () {},
-                            child: Row(
-                              children: const [
-                                Icon(Icons.add),
-                                SizedBox(width: 5),
-                                Text("Folder Pair"),
-                              ],
-                            )),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Column(
-                          children: [
-                            Material(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(100)),
-                              color: Colors.blueGrey,
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                    Icons
-                                        .signal_wifi_statusbar_connected_no_internet_4,
-                                    color: Colors.white),
-                              ),
-                            ),
-                            Text("Test")
-                          ],
-                        ),
-                        SizedBox(width: 15),
-                        Column(
-                          children: [
-                            Material(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(100)),
-                              color: Colors.redAccent.shade700,
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.delete, color: Colors.white),
-                              ),
-                            ),
-                            Text("Delete")
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.025,
-              ),
-              Container(
-                padding: EdgeInsets.all(25),
-                height: MediaQuery.of(context).size.height * 0.564,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey.shade300,
-                ),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blue)),
-                        height: 35,
-                        width: 35,
-                        child: Image.asset("assets/google.png"),
-                      ),
-                      Container(
-                        color: Colors.blue.shade600,
-                        height: 35,
-                        width: 150,
-                        child: Center(
-                          child: Text(
-                            "Sign in with Google",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ));
+    return Scaffold();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../controller/google_drive_controller/google_drive.dart';
 import '../../data/color_scheme.dart' as color_scheme;
+import '../add account/add_account_screen.dart';
 
 class PersonScreen extends StatefulWidget {
   const PersonScreen({super.key});
@@ -30,11 +31,10 @@ class _PersonScreenState extends State<PersonScreen> {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    onPressed: () async {
-                      // await myHomePage.loginWithGoogle();
+                    onPressed: () {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) {
-                          return MyHomePage();
+                          return AddAccountScreen();
                         },
                       ));
                     },
@@ -108,38 +108,3 @@ class _PersonScreenState extends State<PersonScreen> {
     );
   }
 }
-
-// void _showDialog(BuildContext context) {
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return AlertDialog(
-//         title: Column(
-//           children: [Text('Seect Account Type'), Divider()],
-//         ),
-//         actions: <Widget>[
-//           TextButton(
-//             onPressed: () async {
-//               await ;
-//             },
-//             child: Row(
-//               children: [
-//                 Container(
-//                     padding: EdgeInsets.all(5),
-//                     height: 35,
-//                     width: 35,
-//                     decoration: BoxDecoration(
-//                       borderRadius: BorderRadius.circular(10),
-//                       color: Colors.grey.shade100,
-//                     ),
-//                     child: Image.asset("assets/google_drive.png")),
-//                 SizedBox(width: 20),
-//                 Text('Google Drive'),
-//               ],
-//             ),
-//           ),
-//         ],
-//       );
-//     },
-//   );
-// }

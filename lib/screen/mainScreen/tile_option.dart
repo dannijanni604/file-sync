@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Container tileOptions(BuildContext context, icon, title) {
   return Container(
-    height: MediaQuery.of(context).size.height * .085,
+    height: MediaQuery.of(context).size.height * .1,
     width: MediaQuery.of(context).size.width * .45,
     padding: EdgeInsets.symmetric(vertical: 6),
     child: ListTile(
@@ -15,7 +15,7 @@ Container tileOptions(BuildContext context, icon, title) {
       ),
       title: Text(
         title,
-        style: TextStyle(fontSize: 14),
+        style: TextStyle(fontSize: 13),
       ),
     ),
     decoration: BoxDecoration(
