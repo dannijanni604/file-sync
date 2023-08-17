@@ -209,14 +209,8 @@ class MyHomePageState extends State<MyHomePage> {
     return listItem;
   }
 
-// UI
-// UI
-// UI
-// UI
-// UI
-// UI
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return CircularProgressIndicator();
   }
 }

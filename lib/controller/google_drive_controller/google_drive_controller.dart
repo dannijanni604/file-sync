@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:file_sync/controller/google_drive_controller/google_drive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +6,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart' as ga;
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-
-import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 
 class DriveController with ChangeNotifier {
@@ -36,7 +31,6 @@ class DriveController with ChangeNotifier {
       googleSignInAccount = account;
       afterGoogleLogin(account);
     }
-    // appSnackBar(context, "Logged In Successfully");
   }
 
   Future<void> afterGoogleLogin(GoogleSignInAccount gSA) async {
@@ -152,40 +146,43 @@ class DriveController with ChangeNotifier {
       print('Download File Error: $error');
     }
   }
-  // List<Widget> generateFilesWidget() {
-  //   List<Widget> listItem = <Widget>[];
-  //   if (list.files == null) {
-  //     return [];
-  //   }
-  //   for (var i = 0; i < list.files!.length; i++) {
-  //     listItem.add(Row(
-  //       children: <Widget>[
-  //         SizedBox(
-  //           width: MediaQuery.of(context).size.width * 0.05,
-  //           child: Text('${i + 1}'),
-  //         ),
-  //         Expanded(
-  //           child: Text(list.files?[i].name ?? 'No Name'),
-  //         ),
-  //         SizedBox(
-  //           width: MediaQuery.of(context).size.width * 0.3,
-  //           child: ElevatedButton(
-  //             child: Text(
-  //               'Download',
-  //               style: TextStyle(
-  //                 color: Colors.white,
-  //               ),
-  //             ),
-  //             onPressed: () {
-  //               if (list.files != null) {
-  //                 downloadFile(list.files![i]);
-  //               }
-  //             },
-  //           ),
-  //         ),
-  //       ],
-  //     ));
-  //   }
-  //   return listItem;
-  // }
+
+  List<Widget> generateFilesWidget() {
+    List<Widget> listItem = <Widget>[];
+    if (list.files == null) {
+      return [];
+    }
+    for (var i = 0; i < list.files!.length; i++) {
+      listItem.add(Row(
+        children: <Widget>[
+          SizedBox(
+            // width: MediaQuery.of(context).size.width * 0.05,
+            width: 5,
+            child: Text('${i + 1}'),
+          ),
+          Expanded(
+            child: Text(list.files?[i].name ?? 'No Name'),
+          ),
+          SizedBox(
+            // width: MediaQuery.of(context).size.width * 0.3,
+            width: 30,
+            child: ElevatedButton(
+              child: Text(
+                'Download',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () {
+                if (list.files != null) {
+                  downloadFile(list.files![i]);
+                }
+              },
+            ),
+          ),
+        ],
+      ));
+    }
+    return listItem;
+  }
 }
