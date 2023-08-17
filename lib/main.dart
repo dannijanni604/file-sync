@@ -1,7 +1,6 @@
 import 'package:file_sync/providers/google_drive_provider/google_drive_provider.dart';
 import 'package:file_sync/providers/more_provider.dart';
 import 'package:file_sync/providers/navigator.dart';
-import 'package:file_sync/firebase_api/firebase_api.dart';
 import 'package:file_sync/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
