@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Container topOptions(BuildContext context) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -10,47 +10,37 @@ Container topOptions(BuildContext context) {
           "Sync overview",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
         ),
-        SizedBox(
-          height: 8,
-        ),
+        SizedBox(height: 8),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            TextButton.icon(
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                      EdgeInsets.symmetric(horizontal: 30)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
+            Expanded(
+              child: TextButton.icon(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Color.fromARGB(255, 0, 0, 0),
+                    backgroundColor: Color.fromARGB(255, 78, 170, 216),
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  foregroundColor:
-                      MaterialStatePropertyAll(Color.fromARGB(255, 0, 0, 0)),
-                  backgroundColor: MaterialStatePropertyAll(
-                    Color.fromARGB(255, 78, 170, 216),
-                  ),
-                ),
-                onPressed: () {},
-                icon: Icon(Icons.play_arrow),
-                label: Text("Sync all")),
-            TextButton.icon(
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                      EdgeInsets.symmetric(horizontal: 30)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(08),
+                  onPressed: () {},
+                  icon: Icon(Icons.play_arrow),
+                  label: Text("Sync all")),
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              child: TextButton.icon(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Color.fromARGB(255, 0, 0, 0),
+                    backgroundColor: Color.fromARGB(255, 78, 170, 216),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  foregroundColor:
-                      MaterialStatePropertyAll(Color.fromARGB(255, 0, 0, 0)),
-                  backgroundColor: MaterialStatePropertyAll(
-                      Color.fromARGB(255, 78, 170, 216)),
-                ),
-                onPressed: () {},
-                icon: Icon(Icons.work_history_rounded),
-                label: Text("History")),
+                  onPressed: () {},
+                  icon: Icon(Icons.work_history_rounded),
+                  label: Text("History")),
+            ),
           ],
         )
       ],

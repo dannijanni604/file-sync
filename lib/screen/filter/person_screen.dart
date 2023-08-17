@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../controller/google_drive_controller/google_drive.dart';
+import '../../providers/google_drive_provider/google_drive.dart';
 import '../../data/color_scheme.dart' as color_scheme;
 import '../add account/add_account_screen.dart';
 
@@ -27,7 +27,7 @@ class _PersonScreenState extends State<PersonScreen> {
             builder: (context) {
               return AlertDialog(
                 title: Column(
-                  children: [Text('Seect Account Type'), Divider()],
+                  children: [Text('Select Account Type'), Divider()],
                 ),
                 actions: <Widget>[
                   TextButton(

@@ -1,5 +1,7 @@
-import 'package:file_sync/controller/google_drive_controller/google_drive_controller.dart';
-import 'package:file_sync/controller/navigator.dart';
+import 'package:file_sync/providers/google_drive_provider/google_drive_provider.dart';
+import 'package:file_sync/providers/more_provider.dart';
+import 'package:file_sync/providers/navigator.dart';
+import 'package:file_sync/firebase_api/firebase_api.dart';
 import 'package:file_sync/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -27,13 +29,13 @@ void callbackDispatcher() {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  // await FirebaseApi().initNotification();
   await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
 
-  await Firebase.initializeApp();
-  runApp(ChangeNotifierProvider(
-    create: (_) => DriveController(),
-    child: MyApp(),
-  ));
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -41,16 +43,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: ChangeNotifierProvider(
-        create: (context) => BottomNavigator(),
-        child: Home(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<DriveController>(
+          create: (_) => DriveController(),
+        ),
+        ChangeNotifierProvider<MoreProvider>(
+          create: (_) => MoreProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: ChangeNotifierProvider(
+          create: (context) => BottomNavigator(),
+          child: Home(),
+        ),
       ),
     );
   }

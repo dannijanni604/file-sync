@@ -1,4 +1,4 @@
-import 'package:file_sync/controller/google_drive_controller/google_drive.dart';
+import 'package:file_sync/providers/google_drive_provider/google_drive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

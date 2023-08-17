@@ -13,9 +13,13 @@ Container tileOptions(BuildContext context, icon, title) {
           color: Colors.white,
         ),
       ),
-      title: Text(
-        title,
-        style: TextStyle(fontSize: 13),
+      title: Expanded(
+        child: Text(
+          title,
+          style: TextStyle(fontSize: 13),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+        ),
       ),
     ),
     decoration: BoxDecoration(

@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import '../../data/color_scheme.dart' as color_scheme;
 import 'cards.dart';
+
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
 
@@ -10,12 +11,18 @@ class MoreScreen extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(
-          children:[
-            SizedBox(height:10 ,),
+          children: [
+            SizedBox(
+              height: 10,
+            ),
             firstCard(),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             secondCard(context),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             thirdCard(context),
           ],
         ),
