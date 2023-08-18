@@ -4,6 +4,7 @@ Container topOptions(BuildContext context) {
   return Container(
     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
     child: Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -45,7 +46,7 @@ Container topOptions(BuildContext context) {
         )
       ],
     ),
-    width: MediaQuery.of(context).size.width,
+    // width: MediaQuery.of(context).size.width,
     decoration: BoxDecoration(
         color: Color.fromARGB(255, 181, 203, 214),
         borderRadius: BorderRadius.all(Radius.circular(15))),

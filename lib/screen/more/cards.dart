@@ -1,5 +1,6 @@
 import 'package:file_sync/providers/more_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../../data/color_scheme.dart' as color_scheme;
 
@@ -115,7 +116,7 @@ secondCard(BuildContext context) {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 16.0, top: 8.0),
+            padding: EdgeInsets.only(left: 16.0, top: 8.0, right: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -138,6 +139,7 @@ secondCard(BuildContext context) {
 }
 
 thirdCard(BuildContext context) {
+  final _formKey = GlobalKey<FormState>();
   return Consumer<MoreProvider>(builder: (context, value, chidl) {
     return Card(
       child: Column(
@@ -189,6 +191,167 @@ thirdCard(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Use access PIN'),
+                    Spacer(),
+                    value.isAccessPinEnabled
+                        ? GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Container(
+                                      width: 500,
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: const [
+                                              Icon(
+                                                Icons.lock,
+                                                size: 25,
+                                                color: Colors.white,
+                                              ),
+                                              SizedBox(width: 5),
+                                              Text(
+                                                "PIN",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          Form(
+                                            key: _formKey,
+                                            child: Column(
+                                              children: [
+                                                TextFormField(
+                                                  controller:
+                                                      value.pincontroller,
+                                                  obscureText: true,
+                                                  decoration: InputDecoration(
+                                                    isDense: true,
+                                                    label: Text("PIN"),
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  ),
+                                                  validator: (v) {
+                                                    if (v!.isNotEmpty &&
+                                                        v.length >= 4) {
+                                                      return null;
+                                                    } else {
+                                                      return "pin length must be 4 or above";
+                                                    }
+                                                  },
+                                                ),
+                                                SizedBox(height: 10),
+                                                TextFormField(
+                                                  controller:
+                                                      value.pinCcontroller,
+                                                  obscureText: true,
+                                                  decoration: InputDecoration(
+                                                    isDense: true,
+                                                    label: Text("Confirm PIN"),
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  ),
+                                                  validator: (v) {
+                                                    if (v!.isNotEmpty &&
+                                                        value.pincontroller
+                                                                .text ==
+                                                            value.pinCcontroller
+                                                                .text) {
+                                                      {
+                                                        return null;
+                                                      }
+                                                    } else {
+                                                      return "same as above pin";
+                                                    }
+                                                  },
+                                                ),
+                                                SizedBox(height: 10),
+                                                TextFormField(
+                                                  controller:
+                                                      value.pinExTimecontroller,
+                                                  decoration: InputDecoration(
+                                                    isDense: true,
+                                                    label: Text(
+                                                      "Pin Expire In Sec",
+                                                    ),
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 10),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Unlock With Fingerprint",
+                                                      style: TextStyle(
+                                                          fontSize: 8),
+                                                    ),
+                                                    Switch(
+                                                      value: value.isfpEnable,
+                                                      onChanged: (val) {
+                                                        // value
+                                                        //     .toggleUFPEnabled(
+                                                        //         fpEnable:
+                                                        //             val);
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text("Cancel")),
+                                      TextButton(
+                                          onPressed: () {
+                                            if (_formKey.currentState!
+                                                    .validate() &&
+                                                value.pincontroller.text ==
+                                                    value.pinCcontroller.text) {
+                                              value.onSavePinSetting();
+                                              Navigator.pop(context);
+                                            }
+                                          },
+                                          child: Text("Save")),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: Icon(
+                              Icons.onetwothree,
+                              size: 30,
+                              color: Colors.blue,
+                            ),
+                          )
+                        : SizedBox(),
+                    SizedBox(width: 5),
                     Switch(
                       value: value.isAccessPinEnabled,
                       onChanged: (val) {

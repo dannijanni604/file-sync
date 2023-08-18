@@ -2,25 +2,25 @@ import 'package:file_sync/providers/google_drive_provider/google_drive_provider.
 import 'package:file_sync/providers/more_provider.dart';
 import 'package:file_sync/providers/navigator.dart';
 import 'package:file_sync/home.dart';
+import 'package:file_sync/screen/pin_to_unlock.dart';
+import 'package:file_sync/screen/splash.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:googleapis/domains/v1.dart';
 import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
 
-sendData() {
-  print("HHHHHHHHHHHHHHHHHHHHHHHHHHH");
-}
-
 const task = "firstTask";
 void callbackDispatcher() {
+  // Workmanager().registerOneOffTask("First Task");
   Workmanager().executeTask((taskName, inputData) {
+    taskName.characters;
     switch (taskName) {
       case "firstTask":
-        sendData();
         break;
       default:
     }
-
     print("Native called background task: ---");
     return Future.value(true);
   });
@@ -30,7 +30,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   // await FirebaseApi().initNotification();
-  await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+  await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
 
   runApp(
     const MyApp(),
@@ -50,19 +50,18 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<MoreProvider>(
           create: (_) => MoreProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => BottomNavigator(),
+        ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: ChangeNotifierProvider(
-          create: (context) => BottomNavigator(),
-          child: Home(),
-        ),
-      ),
+      child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: SplashScreen()),
     );
   }
 }

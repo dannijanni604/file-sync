@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:workmanager/workmanager.dart';
 
 class MainScreen extends StatelessWidget {
-  MainScreen({super.key});
+  const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class MainScreen extends StatelessWidget {
                   onTap: () async {
                     Workmanager().registerPeriodicTask(
                       DateTime.now().second.toString(),
-                      task,
+                      "first Task",
                     );
                   },
                   child: tileOptions(
