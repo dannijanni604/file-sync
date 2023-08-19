@@ -1,15 +1,13 @@
 import 'dart:io';
-
 import 'package:file_manager/file_manager.dart';
 import 'package:file_sync/data/color_scheme.dart' as color_scheme;
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class FileScreen extends StatelessWidget {
-  final FileManagerController controller = FileManagerController();
-
   @override
   Widget build(BuildContext context) {
+    final FileManagerController controller = FileManagerController();
     return FutureBuilder(
       future: Permission.storage.request(),
       builder: (context, request) => FileManager(

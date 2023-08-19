@@ -2,13 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:workmanager/workmanager.dart';
 
 class MoreProvider extends ChangeNotifier {
   final _auth = FirebaseAuth.instance;
   bool isLoggingEnabled = false;
   bool isNotiEnable = false;
-  bool isSyncEnabled = true;
+  bool isSyncEnabled = false;
   bool isAccessPinEnabled = false;
   String? pinToUnlock = '';
   bool isfpEnable = false;
@@ -21,57 +20,46 @@ class MoreProvider extends ChangeNotifier {
   final pinCcontroller = TextEditingController();
   final pinExTimecontroller = TextEditingController(text: 10.toString());
 
-  static Future<SharedPreferences> preferences() async {
-    return SharedPreferences.getInstance();
-  }
+  void toggleToMoreSetting(bool v, int index) async {
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
+    switch (index) {
+      case 0:
+        {
+          isLoggingEnabled = v;
+          _pref.setBool("isLoggingEnabled", v);
+        }
+        break;
+      case 1:
+        {
+          isSyncEnabled = v;
+          _pref.setBool("isSyncEnabled", v);
+        }
+        break;
+      case 2:
+        {
+          isNotiEnable = v;
+          _pref.setBool("isNotiEnable", v);
+        }
+        break;
+      case 3:
+        {
+          isAccessPinEnabled = v;
+          _pref.setBool("isAccessPinEnabled", isAccessPinEnabled);
+        }
+        break;
 
-  void toggleLoggingEnabled({bool? loggingEnabled}) async {
-    final prefs = await preferences();
-    prefs.setBool('isLoggingEnabled', loggingEnabled!);
-    isLoggingEnabled = loggingEnabled;
+      default:
+    }
     notifyListeners();
   }
 
-  void toggleSyncEnabled({bool? syncEnabled}) async {
-    final prefs = await preferences();
-    prefs.setBool('isSyncEnabled', syncEnabled!);
-    isSyncEnabled = syncEnabled;
-    notifyListeners();
+  void getPrefrances() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    isLoggingEnabled = prefs.getBool("isLoggingEnabled") ?? false;
+    isSyncEnabled = prefs.getBool("isSyncEnabled") ?? true;
+    isNotiEnable = prefs.getBool("isNotiEnable") ?? true;
+    isAccessPinEnabled = prefs.getBool("isAccessPinEnabled") ?? false;
   }
-
-  void toggleNotification({bool? isNotiEnable}) async {
-    final prefs = await preferences();
-    prefs.setBool('isNotiEnable', isNotiEnable!);
-    this.isNotiEnable = isNotiEnable;
-
-    notifyListeners();
-  }
-
-  void toggleAccessPin({bool? accessPinEnabled}) async {
-    final prefs = await preferences();
-    prefs.setBool('isAccessPinEnabled', accessPinEnabled!);
-    isAccessPinEnabled = accessPinEnabled;
-    print(isAccessPinEnabled);
-    notifyListeners();
-  }
-
-  // void toggleUFPEnabled({bool? fpEnable}) async {
-  //   final prefs = await preferences();
-  //   prefs.setBool('isfpEnable', fpEnable!);
-  //   isfpEnable = fpEnable;
-  //   notifyListeners();
-  // }
-
-  // Future<bool> onNotifcationEnable() async {
-  //   SharedPreferences sf = await SharedPreferences.getInstance();
-  //   bool? notifEnable = sf.getBool("isNotiEnable");
-
-  //   if (_auth.currentUser != null && notifEnable!) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   Future<void> onSavePinSetting() async {
     final SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -79,22 +67,5 @@ class MoreProvider extends ChangeNotifier {
     _pref.setString("pinExTime", pinExTimecontroller.text);
     pincontroller.clear();
     pinCcontroller.clear();
-  }
-
-  Future<void> getPreferances() async {
-    final prefs = await preferences();
-    isLoggingEnabled = prefs.getBool("isLoggingEnabled")!;
-    isSyncEnabled = prefs.getBool("isSyncEnabled")!;
-    isNotiEnable = prefs.getBool("isNotiEnable")!;
-    isAccessPinEnabled = prefs.getBool("isAccessPinEnabled")!;
-    pinToUnlock = prefs.getString("pinToUnlock")!;
-    // isfpEnable = prefs.getBool("isfpEnable")!;
-
-    print("isLoggingEnabled  :  $isLoggingEnabled");
-    print("isSyncEnabled  :  $isSyncEnabled");
-    print("isNotiEnable  :  $isNotiEnable");
-    print("isAccessPinEnabled  :  $isAccessPinEnabled");
-    print("pinToUnlock  :  $pinToUnlock");
-    // print("isLoggingEnabled  :  $isLoggingEnabled");
   }
 }

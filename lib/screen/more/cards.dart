@@ -126,7 +126,7 @@ secondCard(BuildContext context) {
                 Switch(
                   value: value.isLoggingEnabled,
                   onChanged: (val) {
-                    value.toggleLoggingEnabled(loggingEnabled: val);
+                    value.toggleToMoreSetting(val, 0);
                   },
                 ),
               ],
@@ -160,7 +160,7 @@ thirdCard(BuildContext context) {
                     Switch(
                       value: value.isSyncEnabled,
                       onChanged: (val) {
-                        value.toggleSyncEnabled(syncEnabled: val);
+                        value.toggleToMoreSetting(val, 1);
                       },
                     ),
                   ],
@@ -179,7 +179,7 @@ thirdCard(BuildContext context) {
                           // focusColor: color_scheme.mainColor,
                           value: value.isNotiEnable,
                           onChanged: (val) {
-                            value.toggleNotification(isNotiEnable: val);
+                            value.toggleToMoreSetting(val, 2);
                           },
                         ),
                       ],
@@ -355,7 +355,7 @@ thirdCard(BuildContext context) {
                     Switch(
                       value: value.isAccessPinEnabled,
                       onChanged: (val) {
-                        value.toggleAccessPin(accessPinEnabled: val);
+                        value.toggleToMoreSetting(val, 3);
                       },
                     ),
                   ],

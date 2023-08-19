@@ -1,13 +1,11 @@
+import 'package:file_manager/file_manager.dart';
 import 'package:file_sync/providers/google_drive_provider/google_drive_provider.dart';
 import 'package:file_sync/providers/more_provider.dart';
 import 'package:file_sync/providers/navigator.dart';
-import 'package:file_sync/home.dart';
-import 'package:file_sync/screen/pin_to_unlock.dart';
 import 'package:file_sync/screen/splash.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:googleapis/domains/v1.dart';
 import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -31,7 +29,6 @@ void main() async {
   await Firebase.initializeApp();
   // await FirebaseApi().initNotification();
   await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
-
   runApp(
     const MyApp(),
   );

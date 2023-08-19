@@ -4,6 +4,7 @@ import 'package:file_sync/screen/pin_to_unlock.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,12 +14,11 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  String? pin;
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      final moreProvider = Provider.of<MoreProvider>(context, listen: false);
-      await moreProvider.getPreferances();
-      onPin(moreProvider);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final mp = Provider.of<MoreProvider>(context, listen: false);
+      mp.getPrefrances();
+      onPin();
     });
     super.initState();
   }
@@ -36,12 +36,14 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  void onPin(MoreProvider moreProvider) async {
-    bool isAccessPinEnabled = moreProvider.isAccessPinEnabled;
-    pin = moreProvider.pinToUnlock;
-    if (pin!.isNotEmpty && isAccessPinEnabled == true) {
+  void onPin() async {
+    final _pref = await SharedPreferences.getInstance();
+
+    final ispinEnable = _pref.getBool("isAccessPinEnabled");
+    final pin = _pref.getString("pinToUnlock");
+    if (pin!.isNotEmpty && ispinEnable == true) {
       Get.offAll(() => PinToUnlockScreen(
-            pin: pin!,
+            pin: pin,
           ));
     } else {
       Get.offAll(() => Home());
