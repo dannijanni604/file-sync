@@ -46,7 +46,7 @@ class PinToUnlockScreen extends StatelessWidget {
                   ),
                   onChanged: (v) {
                     if (v == pin) {
-                      Get.to(() => Home());
+                      Get.offAll(() => Home());
                     } else {
                       "Wrong Pin";
                     }

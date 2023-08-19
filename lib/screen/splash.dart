@@ -25,15 +25,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text(
-          "Splash Screen",
-          style: TextStyle(
-            fontSize: 30,
-            color: Colors.green,
-            fontWeight: FontWeight.bold,
-          ),
+        child: Image.asset(
+          "assets/logo.png",
+          fit: BoxFit.fill,
+          scale: 4,
         ),
       ),
     );
@@ -43,11 +40,11 @@ class _SplashScreenState extends State<SplashScreen> {
     bool isAccessPinEnabled = moreProvider.isAccessPinEnabled;
     pin = moreProvider.pinToUnlock;
     if (pin!.isNotEmpty && isAccessPinEnabled == true) {
-      Get.to(() => PinToUnlockScreen(
+      Get.offAll(() => PinToUnlockScreen(
             pin: pin!,
           ));
     } else {
-      Get.to(() => Home());
+      Get.offAll(() => Home());
     }
   }
 }
