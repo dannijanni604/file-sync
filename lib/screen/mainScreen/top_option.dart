@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Container topOptions(BuildContext context) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 20),
     child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,

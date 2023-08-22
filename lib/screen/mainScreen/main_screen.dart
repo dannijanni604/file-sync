@@ -1,9 +1,11 @@
 import 'package:file_sync/main.dart';
+import 'package:file_sync/providers/more_provider.dart';
 import 'package:file_sync/screen/mainScreen/components/battery_options.dart';
 import 'package:file_sync/screen/mainScreen/tile_option.dart';
 import 'package:file_sync/screen/mainScreen/components/internet_options.dart';
 import 'package:file_sync/screen/mainScreen/top_option.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
 
 class MainScreen extends StatelessWidget {
@@ -40,7 +42,7 @@ class MainScreen extends StatelessWidget {
                       context, Icons.info, "No sync have been run")),
               tileOptions(context, Icons.alarm_off_outlined, "No sync timed"),
             ],
-          )
+          ),
         ],
       ),
     ));

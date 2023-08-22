@@ -1,7 +1,12 @@
+import 'package:file_sync/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:local_auth/error_codes.dart' as auth_error;
 
 class MoreProvider extends ChangeNotifier {
   final _auth = FirebaseAuth.instance;
@@ -47,6 +52,12 @@ class MoreProvider extends ChangeNotifier {
           _pref.setBool("isAccessPinEnabled", isAccessPinEnabled);
         }
         break;
+      case 4:
+        {
+          isfpEnable = v;
+          _pref.setBool("isfpEnable", isAccessPinEnabled);
+        }
+        break;
 
       default:
     }
@@ -59,6 +70,45 @@ class MoreProvider extends ChangeNotifier {
     isSyncEnabled = prefs.getBool("isSyncEnabled") ?? true;
     isNotiEnable = prefs.getBool("isNotiEnable") ?? true;
     isAccessPinEnabled = prefs.getBool("isAccessPinEnabled") ?? false;
+    isfpEnable = prefs.getBool("isfpEnable") ?? false;
+  }
+
+  LocalAuthentication localAuthentication = LocalAuthentication();
+
+  void onFingerPrintToUnlock() async {
+    final bool canAuthenticateWithBiometrics =
+        await localAuthentication.canCheckBiometrics;
+    final bool canAuthenticate = canAuthenticateWithBiometrics ||
+        await localAuthentication.isDeviceSupported();
+    print("canAuthenticate :: $canAuthenticate");
+
+    final List<BiometricType> availableBiometrics =
+        await localAuthentication.getAvailableBiometrics();
+    if (availableBiometrics.isNotEmpty) {
+      availableBiometrics.contains(BiometricType.fingerprint);
+      print("availableBiometrics :: $availableBiometrics");
+
+      try {
+        final bool didAuthenticate = await localAuthentication.authenticate(
+          localizedReason: 'Please authenticate to show account balance',
+        );
+
+        Get.offAll(() => Home());
+      } on PlatformException catch (e) {
+        Get.snackbar(
+          "Error",
+          "error to authenticate try again",
+          colorText: Colors.white,
+          backgroundColor: Colors.red[200],
+        );
+        if (e.code == auth_error.notEnrolled) {
+        } else if (e.code == auth_error.lockedOut ||
+            e.code == auth_error.permanentlyLockedOut) {
+        } else {
+          // ...
+        }
+      }
+    }
   }
 
   Future<void> onSavePinSetting() async {

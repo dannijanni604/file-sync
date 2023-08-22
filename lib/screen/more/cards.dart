@@ -305,15 +305,18 @@ thirdCard(BuildContext context) {
                                                       style: TextStyle(
                                                           fontSize: 8),
                                                     ),
-                                                    Switch(
-                                                      value: value.isfpEnable,
-                                                      onChanged: (val) {
-                                                        // value
-                                                        //     .toggleUFPEnabled(
-                                                        //         fpEnable:
-                                                        //             val);
-                                                      },
-                                                    ),
+                                                    Consumer<MoreProvider>(
+                                                        builder: (context,
+                                                            value, child) {
+                                                      return Switch(
+                                                        value: value.isfpEnable,
+                                                        onChanged: (val) {
+                                                          value
+                                                              .toggleToMoreSetting(
+                                                                  val, 4);
+                                                        },
+                                                      );
+                                                    }),
                                                   ],
                                                 ),
                                               ],

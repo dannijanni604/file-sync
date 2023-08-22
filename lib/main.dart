@@ -1,4 +1,3 @@
-import 'package:file_manager/file_manager.dart';
 import 'package:file_sync/providers/google_drive_provider/google_drive_provider.dart';
 import 'package:file_sync/providers/more_provider.dart';
 import 'package:file_sync/providers/navigator.dart';
