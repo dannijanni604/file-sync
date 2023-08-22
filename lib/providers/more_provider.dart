@@ -49,13 +49,13 @@ class MoreProvider extends ChangeNotifier {
       case 3:
         {
           isAccessPinEnabled = v;
-          _pref.setBool("isAccessPinEnabled", isAccessPinEnabled);
+          _pref.setBool("isAccessPinEnabled", v);
         }
         break;
       case 4:
         {
           isfpEnable = v;
-          _pref.setBool("isfpEnable", isAccessPinEnabled);
+          _pref.setBool("isfpEnable", v);
         }
         break;
 
@@ -71,6 +71,7 @@ class MoreProvider extends ChangeNotifier {
     isNotiEnable = prefs.getBool("isNotiEnable") ?? true;
     isAccessPinEnabled = prefs.getBool("isAccessPinEnabled") ?? false;
     isfpEnable = prefs.getBool("isfpEnable") ?? false;
+    notifyListeners();
   }
 
   LocalAuthentication localAuthentication = LocalAuthentication();
